@@ -33,6 +33,7 @@ pipeline {
             echo 'Mendorong Docker image...'
             // Menjalankan push langsung via CMD Windows
             bat 'docker push abdieeuh/simple-app:11'
+              }
             }
         }
     }
