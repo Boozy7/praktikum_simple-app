@@ -1,11 +1,10 @@
 pipeline {
     agent any
     environment {
+        // Hapus variabel PATH Linux dan DOCKER_HOST linux agar tidak memicu error docker.sock
         IMAGE_NAME = 'abdieeuh/simple-app'
         REGISTRY = 'https://index.docker.io/v1/'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials'
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-        DOCKER_HOST = "unix:///var/run/docker.sock"
     }
     stages {
         stage('Checkout') {
@@ -23,17 +22,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Membangun Docker image...'
-                // Menjalankan build langsung via CMD Windows
                 bat 'docker build -t "abdieeuh/simple-app:11" .'
-                }
             }
-        }
-       stage('Push Docker Image') {
-          steps {
-            echo 'Mendorong Docker image...'
-            // Menjalankan push langsung via CMD Windows
-            bat 'docker push abdieeuh/simple-app:11'
-              }
+        } // <- Kelebihan kurung kurawal di sini sudah dihapus
+        stage('Push Docker Image') {
+            steps {
+                echo 'Mendorong Docker image...'
+                bat 'docker push abdieeuh/simple-app:11'
             }
         }
     }
