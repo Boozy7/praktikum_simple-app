@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
-        // Hapus variabel PATH Linux dan DOCKER_HOST linux agar tidak memicu error docker.sock
         IMAGE_NAME = 'abdieeuh/simple-app'
         REGISTRY = 'https://index.docker.io/v1/'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials'
@@ -19,6 +18,12 @@ pipeline {
                 bat 'echo "Build selesai ✅"'
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Membangun Docker image...'
+                bat 'docker build -t "abdieeuh/simple-app:11" .'
+            }
+        }
         stage('Push Docker Image') {
             steps {
                 echo 'Mendorong Docker image...'
@@ -26,13 +31,6 @@ pipeline {
                     bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                     bat 'docker push abdieeuh/simple-app:11'
                 }
-            }
-        }
-        }
-        stage('Push Docker Image') {
-            steps {
-                echo 'Mendorong Docker image...'
-                bat 'docker push abdieeuh/simple-app:11'
             }
         }
     }
