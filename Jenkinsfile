@@ -22,22 +22,17 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                    echo 'Membangun Docker image...'
-                    docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
-                    echo "Image berhasil dibuat: ${IMAGE_NAME}:${env.BUILD_NUMBER}"
+                echo 'Membangun Docker image...'
+                // Menjalankan build langsung via CMD Windows
+                bat 'docker build -t "abdieeuh/simple-app:11" .'
                 }
             }
         }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    echo 'Push image ke Docker Hub...'
-                    docker.withRegistry(REGISTRY, REGISTRY_CREDENTIALS) {
-                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
-                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push('latest')
-                    }
-                }
+       stage('Push Docker Image') {
+          steps {
+            echo 'Mendorong Docker image...'
+            // Menjalankan push langsung via CMD Windows
+            bat 'docker push abdieeuh/simple-app:11'
             }
         }
     }
