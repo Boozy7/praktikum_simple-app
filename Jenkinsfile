@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = 'abdieeuh/simple-app'
+        IMAGE_NAME = 'wildanleroy/simple-app'
         REGISTRY = 'https://index.docker.io/v1/'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials'
     }
@@ -21,7 +21,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Membangun Docker image...'
-                bat 'docker build -t "abdieeuh/simple-app:11" .'
+                // Ubah nama image sesuai dengan akun Docker Hub Anda
+                bat 'docker build -t "wildanleroy/simple-app:11" .'
             }
         }
         stage('Push Docker Image') {
@@ -29,7 +30,8 @@ pipeline {
                 echo 'Mendorong Docker image...'
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
                     bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
-                    bat 'docker push abdieeuh/simple-app:11'
+                    // Push dengan nama image yang baru
+                    bat 'docker push wildanleroy/simple-app:11'
                 }
             }
         }
