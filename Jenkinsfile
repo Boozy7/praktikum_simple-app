@@ -19,12 +19,15 @@ pipeline {
                 bat 'echo "Build selesai ✅"'
             }
         }
-        stage('Build Docker Image') {
+        stage('Push Docker Image') {
             steps {
-                echo 'Membangun Docker image...'
-                bat 'docker build -t "abdieeuh/simple-app:11" .'
+                echo 'Mendorong Docker image...'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    bat 'docker push abdieeuh/simple-app:11'
+                }
             }
-        } // <- Kelebihan kurung kurawal di sini sudah dihapus
+        }
         stage('Push Docker Image') {
             steps {
                 echo 'Mendorong Docker image...'
