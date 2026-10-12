@@ -26,7 +26,6 @@ pipeline {
                     bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                     bat 'docker push abdieeuh/simple-app:11'
                 }
-            }
         }
         stage('Push Docker Image') {
             steps {
